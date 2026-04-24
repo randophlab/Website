@@ -677,8 +677,7 @@
       `).join('');
     }
     
-    // ========== 頁面載入 ==========
-    window.addEventListener('DOMContentLoaded', () => {
+    // ========== 渲染 OA 排行榜 ==========
     function renderOARanking() {
       const container = document.getElementById('oa-ranking');
       container.innerHTML = dashboardData.oaRanking.map((oa, idx) => {

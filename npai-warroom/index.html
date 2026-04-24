@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NPAI 戰情室 | AI Intelligence Dashboard</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Animation Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/countup@1.8.2/dist/countUp.min.js"></script>
+  
+  <!-- Chart.js (輕量級圖表庫) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* 獨特字體組合 */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+    
+    * {
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+    
+    .font-display {
+      font-family: 'Orbitron', monospace;
+    }
+    
+    /* CSS 變數 - 戰情室配色 */
+    :root {
+      --primary: #06b6d4;
+      --primary-glow: rgba(6, 182, 212, 0.5);
+      --accent: #84cc16;
+      --accent-glow: rgba(132, 204, 22, 0.5);
+      --warning: #fbbf24;
+      --danger: #f43f5e;
+      --bg-dark: #0f172a;
+      --bg-darker: #020617;
+      --card-bg: rgba(15, 23, 42, 0.8);
+      --card-border: rgba(6, 182, 212, 0.2);
+    }
+    
+    /* 背景網格效果 */
+    .grid-bg {
+      background-image: 
+        linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    
+    /* 霓虹發光效果 */
+    .neon-glow {
+      text-shadow: 0 0 10px var(--primary-glow),
+                   0 0 20px var(--primary-glow),
+                   0 0 30px var(--primary-glow);
+    }
+    
+    /* 卡片進場動畫 */
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-slide-in {
+      animation: slideInUp 0.6s ease-out forwards;
+      opacity: 0;
+    }
+    
+    .animate-delay-1 { animation-delay: 0.1s; }
+    .animate-delay-2 { animation-delay: 0.2s; }
+    .animate-delay-3 { animation-delay: 0.3s; }
+    .animate-delay-4 { animation-delay: 0.4s; }
+    
+    /* 脈衝動畫 */
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+    
+    .pulse-ring {
+      animation: pulse-ring 2s infinite;
+    }
+    
+    /* Tab 切換動畫 */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease-in;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 進度條動畫 */
+    .progress-bar {
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* 滾動條樣式 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(6, 182, 212, 0.3);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(6, 182, 212, 0.5);
+    }
+    
+    /* 卡片 Hover 效果 */
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(6, 182, 212, 0.2);
+    }
+    
+    /* 霓虹邊框效果 */
+    .neon-border {
+      position: relative;
+      border: 1px solid var(--card-border);
+    }
+    
+    .neon-border::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .neon-border:hover::before {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100 min-h-screen">
+  
+  <!-- 背景網格效果 -->
+  <div class="fixed inset-0 grid-bg opacity-10 pointer-events-none"></div>
+  
+  <!-- Header -->
+  <header class="relative border-b border-cyan-900/30 backdrop-blur-xl bg-slate-950/50 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <!-- 脈衝指示器 -->
+          <div class="relative">
+            <div class="w-3 h-3 rounded-full bg-cyan-500"></div>
+            <div class="absolute inset-0 w-3 h-3 rounded-full bg-cyan-500 pulse-ring"></div>
+          </div>
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-bold font-display tracking-tight neon-glow" style="color: var(--primary)">
+              NPAI 戰情室
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+              AI Intelligence Dashboard v2.0
+            </p>
+          </div>
+        </div>
+        
+        <!-- 最後更新時間 -->
+        <div class="text-xs text-slate-400">
+          <div class="flex items-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+            <span>更新於: <span class="text-cyan-400">2026-04-24 02:00</span></span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tabs Navigation -->
+      <nav class="mt-4 flex gap-2 overflow-x-auto pb-2">
+        <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn active px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>戰情總覽</span>
+        </button>
+        <button onclick="switchTab('materials')" id="tab-materials" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap flex items-center gap-2">
+          <i data-lucide="database" class="w-4 h-4"></i>
+          <span>素材庫</span>
+        </button>
+        <button onclick="switchTab('insights')" id="tab-insights" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap flex items-center gap-2">
+          <i data-lucide="brain" class="w-4 h-4"></i>
+          <span>對話洞察</span>
+        </button>
+        <button onclick="switchTab('ranking')" id="tab-ranking" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap flex items-center gap-2">
+          <i data-lucide="trophy" class="w-4 h-4"></i>
+          <span>OA 競賽</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Tab 1: 戰情總覽 -->
+    <div id="content-overview" class="tab-content active">
+      <!-- Hero KPI 數字 -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        <div class="card-hover neon-border bg-slate-900/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 animate-slide-in">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="p-3 rounded-xl bg-gradient-to-br from-cyan-600 to-cyan-500 shadow-lg shadow-cyan-500/30">
+              <i data-lucide="users" class="w-6 h-6"></i>
+            </div>
+            <div class="text-sm text-slate-400">活躍會員</div>
+          </div>
+          <div class="text-4xl sm:text-5xl font-bold font-display mb-2" id="count-members" style="color: var(--primary)">0</div>
+          <div class="flex items-center gap-2 text-xs text-lime-400">
+            <i data-lucide="trending-up" class="w-3 h-3"></i>
+            <span>+12 本週</span>
+          </div>
+        </div>
+        
+        <div class="card-hover neon-border bg-slate-900/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 animate-slide-in animate-delay-1">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="p-3 rounded-xl bg-gradient-to-br from-lime-600 to-lime-500 shadow-lg shadow-lime-500/30">
+              <i data-lucide="message-square" class="w-6 h-6"></i>
+            </div>
+            <div class="text-sm text-slate-400">累計對話</div>
+          </div>
+          <div class="text-4xl sm:text-5xl font-bold font-display mb-2" id="count-conversations" style="color: var(--accent)">0</div>
+          <div class="flex items-center gap-2 text-xs text-lime-400">
+            <i data-lucide="trending-up" class="w-3 h-3"></i>
+            <span>+891 本週</span>
+          </div>
+        </div>
+        
+        <div class="card-hover neon-border bg-slate-900/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 animate-slide-in animate-delay-2">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="p-3 rounded-xl bg-gradient-to-br from-amber-600 to-amber-500 shadow-lg shadow-amber-500/30">
+              <i data-lucide="clock" class="w-6 h-6"></i>
+            </div>
+            <div class="text-sm text-slate-400">節省時間</div>
+          </div>
+          <div class="text-4xl sm:text-5xl font-bold font-display mb-2" id="count-hours" style="color: var(--warning)">0</div>
+          <div class="text-xs text-slate-400">小時 (價值 $<span id="cost-saved">0</span>)</div>
+        </div>
+      </div>
+      
+      <!-- 知識庫成長 + 四時段分析 -->
+      <div class="grid lg:grid-cols-2 gap-6 mb-8">
+        <!-- 知識庫成長曲線 -->
+        <div class="neon-border bg-slate-900/80 backdrop-blur-sm rounded-xl p-6 animate-slide-in animate-delay-3">
+          <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+            <i data-lucide="trending-up" class="w-5 h-5 text-cyan-400"></i>
+            <span>📚 知識複利效應</span>
+          </h3>
+          <div style="height: 200px;">
+            <canvas id="chart-knowledge-growth"></canvas>
+          </div>
+          <div class="mt-4 grid grid-cols-2 gap-3 text-xs">
+            <div class="bg-slate-800/50 rounded-lg p-3">
+              <div class="text-slate-400 mb-1">RAG 知識庫</div>
+              <div class="text-2xl font-bold text-cyan-400">95 條</div>
+              <div class="text-lime-400">+12 本週</div>
+            </div>
+            <div class="bg-slate-800/50 rounded-lg p-3">
+              <div class="text-slate-400 mb-1">公司事實庫</div>
+              <div class="text-2xl font-bold text-lime-400">14 條</div>
+              <div class="text-lime-400">+3 本月</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 四時段守護者 -->
+        <div class="neon-border bg-slate-900/80 backdrop-blur-sm rounded-xl p-6 animate-slide-in animate-delay-4">
+          <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+            <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+            <span>🌞 四時段守護者</span>
+          </h3>
+          <div style="height: 200px;">
+            <canvas id="chart-time-distribution"></canvas>
+          </div>
+          <div class="mt-4 text-xs text-slate-400">
+            <p class="flex items-center gap-2 mb-2">
+              <i data-lucide="moon" class="w-4 h-4 text-cyan-400"></i>
+              <span>深夜仍有 <span class="text-cyan-400 font-bold">1,092</span> 次對話 (15% 來自會員)</span>
+            </p>
+            <p class="text-slate-500">💡 如果沒有 AI,深夜流失率 100%</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 行銷話題卡片 -->
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="bg-gradient-to-br from-cyan-950/30 to-cyan-900/30 rounded-xl border border-cyan-800/30 p-5 animate-slide-in">
+          <div class="text-3xl mb-2">💰</div>
+          <h4 class="font-bold text-lg mb-2">時間價值轉換</h4>
+          <p class="text-sm text-slate-300 mb-3">
+            AI 累計節省 <span class="text-cyan-400 font-bold">1,414 小時</span>
+          </p>
+          <p class="text-xs text-slate-400">
+            = 59 天 × 24 小時<br/>
+            以時薪 $300 計算<br/>
+            <span class="text-lime-400 font-bold">節省 $424,200 元</span>
+          </p>
+        </div>
+        
+        <div class="bg-gradient-to-br from-lime-950/30 to-lime-900/30 rounded-xl border border-lime-800/30 p-5 animate-slide-in animate-delay-1">
+          <div class="text-3xl mb-2">🌙</div>
+          <h4 class="font-bold text-lg mb-2">深夜守護者</h4>
+          <p class="text-sm text-slate-300 mb-3">
+            深夜 (00-06) 仍有 <span class="text-lime-400 font-bold">1,092</span> 次對話
+          </p>
+          <p class="text-xs text-slate-400">
+            訪客佔 85%,會員佔 15%<br/>
+            如果沒有 AI:<br/>
+            <span class="text-rose-400 font-bold">100% 流失</span>
+          </p>
+        </div>
+        
+        <div class="bg-gradient-to-br from-amber-950/30 to-amber-900/30 rounded-xl border border-amber-800/30 p-5 animate-slide-in animate-delay-2">
+          <div class="text-3xl mb-2">🎯</div>
+          <h4 class="font-bold text-lg mb-2">信任建立成功</h4>
+          <p class="text-sm text-slate-300 mb-3">
+            70% 疑慮在 <span class="text-amber-400 font-bold">Mindset</span> 階段解決
+          </p>
+          <p class="text-xs text-slate-400">
+            訪客: 60% 問「信任建立」<br/>
+            會員: 10% 問「信任建立」<br/>
+            <span class="text-lime-400 font-bold">↓ 下降 83%</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab 2: 素材庫 -->
+    <div id="content-materials" class="tab-content">
+      <!-- RAG 知識庫統計 -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-8">
+        <div class="neon-border bg-slate-900/80 rounded-xl p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm text-slate-400">信任建立</span>
+            <div class="px-2 py-1 rounded bg-cyan-950/50 text-xs text-cyan-400">最熱門</div>
+          </div>
+          <div class="text-4xl font-bold font-display text-cyan-400 mb-2">44</div>
+          <div class="w-full bg-slate-800 rounded-full h-2">
+            <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 h-2 rounded-full" style="width: 46%"></div>
+          </div>
+        </div>
+        
+        <div class="neon-border bg-slate-900/80 rounded-xl p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm text-slate-400">自我懷疑</span>
+            <div class="px-2 py-1 rounded bg-lime-950/50 text-xs text-lime-400">高轉化</div>
+          </div>
+          <div class="text-4xl font-bold font-display text-lime-400 mb-2">40</div>
+          <div class="w-full bg-slate-800 rounded-full h-2">
+            <div class="bg-gradient-to-r from-lime-600 to-lime-500 h-2 rounded-full" style="width: 42%"></div>
+          </div>
+        </div>
+        
+        <div class="neon-border bg-slate-900/80 rounded-xl p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm text-slate-400">比較疑慮</span>
+            <div class="px-2 py-1 rounded bg-amber-950/50 text-xs text-amber-400">待補強</div>
+          </div>
+          <div class="text-4xl font-bold font-display text-amber-400 mb-2">11</div>
+          <div class="w-full bg-slate-800 rounded-full h-2">
+            <div class="bg-gradient-to-r from-amber-600 to-amber-500 h-2 rounded-full" style="width: 12%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 熱門素材 TOP 10 -->
+      <div class="neon-border bg-slate-900/80 rounded-xl p-6 mb-8">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+          <i data-lucide="flame" class="w-5 h-5 text-rose-400"></i>
+          <span>🔥 熱門素材 TOP 10</span>
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-800">
+                <th class="text-left py-3 text-slate-400 font-medium">排名</th>
+                <th class="text-left py-3 text-slate-400 font-medium">問題</th>
+                <th class="text-right py-3 text-slate-400 font-medium hidden sm:table-cell">命中次數</th>
+                <th class="text-right py-3 text-slate-400 font-medium">使用率</th>
+              </tr>
+            </thead>
+            <tbody id="top-materials">
+              <!-- 動態生成 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- np_facts 使用分析 -->
+      <div class="neon-border bg-slate-900/80 rounded-xl p-6">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+          <i data-lucide="building" class="w-5 h-5 text-lime-400"></i>
+          <span>🏢 公司事實庫分類</span>
+        </h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="bg-slate-800/50 rounded-lg p-4 border border-lime-800/30">
+            <div class="text-xs text-slate-400 mb-1">產品資訊</div>
+            <div class="text-3xl font-bold text-lime-400">4</div>
+          </div>
+          <div class="bg-slate-800/50 rounded-lg p-4 border border-cyan-800/30">
+            <div class="text-xs text-slate-400 mb-1">法律合規</div>
+            <div class="text-3xl font-bold text-cyan-400">4</div>
+          </div>
+          <div class="bg-slate-800/50 rounded-lg p-4 border border-amber-800/30">
+            <div class="text-xs text-slate-400 mb-1">系統說明</div>
+            <div class="text-3xl font-bold text-amber-400">3</div>
+          </div>
+          <div class="bg-slate-800/50 rounded-lg p-4 border border-rose-800/30">
+            <div class="text-xs text-slate-400 mb-1">市場定位</div>
+            <div class="text-3xl font-bold text-rose-400">3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab 3: 對話洞察 -->
+    <div id="content-insights" class="tab-content">
+      <!-- 4 階段升級漏斗 -->
+      <div class="neon-border bg-slate-900/80 rounded-xl p-6 mb-8">
+        <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+          <i data-lucide="zap" class="w-5 h-5 text-cyan-400"></i>
+          <span>⚡ 4 階段升級漏斗</span>
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-24 text-sm font-medium text-slate-400">Mindset</div>
+            <div class="flex-1">
+              <div class="bg-slate-800 rounded-lg h-12 overflow-hidden relative">
+                <div class="progress-bar absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-600 to-cyan-500 flex items-center justify-end pr-4 text-sm font-bold" style="width: 100%">
+                  38 次
+                </div>
+              </div>
+            </div>
+            <div class="w-16 text-right text-sm font-mono text-cyan-400">100%</div>
+          </div>
+          
+          <div class="flex items-center gap-3">
+            <div class="w-24 text-sm font-medium text-slate-400">Nudge</div>
+            <div class="flex-1">
+              <div class="bg-slate-800 rounded-lg h-12 overflow-hidden relative">
+                <div class="progress-bar absolute inset-y-0 left-0 bg-gradient-to-r from-lime-600 to-lime-500 flex items-center justify-end pr-4 text-sm font-bold" style="width: 0%">
+                  0 次
+                </div>
+              </div>
+            </div>
+            <div class="w-16 text-right text-sm font-mono text-slate-500">0%</div>
+          </div>
+          
+          <div class="flex items-center gap-3">
+            <div class="w-24 text-sm font-medium text-slate-400">Strike</div>
+            <div class="flex-1">
+              <div class="bg-slate-800 rounded-lg h-12 overflow-hidden relative">
+                <div class="progress-bar absolute inset-y-0 left-0 bg-gradient-to-r from-amber-600 to-amber-500 flex items-center justify-end pr-4 text-sm font-bold" style="width: 0%">
+                  0 次
+                </div>
+              </div>
+            </div>
+            <div class="w-16 text-right text-sm font-mono text-slate-500">0%</div>
+          </div>
+          
+          <div class="flex items-center gap-3">
+            <div class="w-24 text-sm font-medium text-slate-400">Close</div>
+            <div class="flex-1">
+              <div class="bg-slate-800 rounded-lg h-12 overflow-hidden relative">
+                <div class="progress-bar absolute inset-y-0 left-0 bg-gradient-to-r from-rose-600 to-rose-500 flex items-center justify-end pr-4 text-sm font-bold" style="width: 0%">
+                  0 次
+                </div>
+              </div>
+            </div>
+            <div class="w-16 text-right text-sm font-mono text-slate-500">0%</div>
+          </div>
+        </div>
+        <p class="mt-4 text-xs text-slate-400 text-center">
+          💡 70% 的疑慮在 Mindset 階段就被解決,證明「換框思考」最有效!
+        </p>
+      </div>
+      
+      <!-- 疑慮分布洞察 -->
+      <div class="grid lg:grid-cols-1 gap-6">
+        <div class="neon-border bg-slate-900/80 rounded-xl p-6">
+          <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+            <i data-lucide="pie-chart" class="w-5 h-5 text-lime-400"></i>
+            <span>👥 疑慮演化分析</span>
+          </h3>
+          <div style="height: 250px;">
+            <canvas id="chart-claim-distribution"></canvas>
+          </div>
+          <div class="mt-4 p-4 bg-lime-950/20 border border-lime-800/30 rounded-lg">
+            <p class="text-sm text-slate-300 mb-2">💡 洞察</p>
+            <p class="text-xs text-slate-400">
+              AI 成功建立信任後,用戶關注從「能不能信」轉向「怎麼做得更好」<br/>
+              <span class="text-lime-400 font-bold">→ 這就是轉化!</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab 4: OA 競賽 -->
+    <div id="content-ranking" class="tab-content">
+      <!-- 本月排行榜 -->
+      <div class="neon-border bg-slate-900/80 rounded-xl p-6 mb-8">
+        <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+          <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i>
+          <span>🏆 本月排行榜</span>
+        </h3>
+        <div class="space-y-4" id="oa-ranking">
+          <!-- 動態生成 -->
+        </div>
+      </div>
+      
+      <!-- 多維度競賽 -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-gradient-to-br from-cyan-950/30 to-cyan-900/30 rounded-xl border border-cyan-800/30 p-5">
+          <div class="text-3xl mb-2">📊</div>
+          <h4 class="font-bold mb-2">對話總量王</h4>
+          <div class="text-2xl font-bold text-cyan-400 mb-1">張經理 OA</div>
+          <div class="text-sm text-slate-400">2,891 次對話</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-lime-950/30 to-lime-900/30 rounded-xl border border-lime-800/30 p-5">
+          <div class="text-3xl mb-2">🎯</div>
+          <h4 class="font-bold mb-2">轉化效率王</h4>
+          <div class="text-2xl font-bold text-lime-400 mb-1">李總監 OA</div>
+          <div class="text-sm text-slate-400">轉化率 45.9%</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-amber-950/30 to-amber-900/30 rounded-xl border border-amber-800/30 p-5">
+          <div class="text-3xl mb-2">⭐</div>
+          <h4 class="font-bold mb-2">新人王</h4>
+          <div class="text-2xl font-bold text-amber-400 mb-1">王組長 OA</div>
+          <div class="text-sm text-slate-400">+89 新會員</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-rose-950/30 to-rose-900/30 rounded-xl border border-rose-800/30 p-5">
+          <div class="text-3xl mb-2">💬</div>
+          <h4 class="font-bold mb-2">熱情獎</h4>
+          <div class="text-2xl font-bold text-rose-400 mb-1">陳主任 OA</div>
+          <div class="text-sm text-slate-400">平均 4.2 輪/對話</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-12 border-t border-slate-800 bg-slate-950/50 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="text-center text-sm text-slate-500">
+        <p>NPAI 顧問系統 © 2026 | Powered by Claude Sonnet 4.5 + n8n</p>
+        <p class="mt-1 text-xs">數據每日凌晨 02:00 自動更新 | 安全連接 | 隱私保護</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ========== 數據初始化 ==========
+    const dashboardData = {
+      kpis: {
+        members: 2347,
+        conversations: 12891,
+        hoursSaved: 1414,
+        costSaved: 424200
+      },
+      topMaterials: [
+        { rank: 1, question: '這真的有效嗎?', hits: 89, rate: 0.89 },
+        { rank: 2, question: '我適合做這個嗎?', hits: 67, rate: 0.67 },
+        { rank: 3, question: '為什麼價格這麼高?', hits: 45, rate: 0.45 },
+        { rank: 4, question: '需要投入多少時間?', hits: 34, rate: 0.34 },
+        { rank: 5, question: '和其他產品比較?', hits: 29, rate: 0.29 },
+        { rank: 6, question: '現在加入來得及嗎?', hits: 28, rate: 0.28 },
+        { rank: 7, question: '有沒有試用方案?', hits: 22, rate: 0.22 },
+        { rank: 8, question: '會不會太難?', hits: 18, rate: 0.18 },
+        { rank: 9, question: '別人做得怎麼樣?', hits: 15, rate: 0.15 },
+        { rank: 10, question: '現在買有優惠嗎?', hits: 12, rate: 0.12 }
+      ],
+      oaRanking: [
+        { rank: 1, name: '張經理', members: 523, conversations: 2891, conversions: 145, score: 98.2 },
+        { rank: 2, name: '李總監', members: 412, conversations: 2134, conversions: 98, score: 95.7 },
+        { rank: 3, name: '王組長', members: 389, conversations: 1987, conversions: 87, score: 92.4 },
+        { rank: 4, name: '陳主任', members: 301, conversations: 1456, conversions: 62, score: 89.1 }
+      ]
+    };
+    
+    // ========== Tab 切換 ==========
+    function switchTab(tabName) {
+      // 隱藏所有 tab 內容
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // 移除所有 tab 按鈕的 active 狀態
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-gradient-to-r', 'from-cyan-600', 'to-cyan-500', 'text-white', 'shadow-lg', 'shadow-cyan-500/30');
+        btn.classList.add('text-slate-400', 'hover:text-slate-200', 'bg-slate-800/50');
+      });
+      
+      // 顯示選中的 tab 內容
+      document.getElementById(`content-${tabName}`).classList.add('active');
+      
+      // 啟用選中的 tab 按鈕
+      const activeBtn = document.getElementById(`tab-${tabName}`);
+      activeBtn.classList.remove('text-slate-400', 'hover:text-slate-200', 'bg-slate-800/50');
+      activeBtn.classList.add('active', 'bg-gradient-to-r', 'from-cyan-600', 'to-cyan-500', 'text-white', 'shadow-lg', 'shadow-cyan-500/30');
+    }
+    
+    // ========== 數字滾動動畫 ==========
+    function initCountUp() {
+      const options = {
+        duration: 2.5,
+        useEasing: true,
+        useGrouping: true,
+        separator: ','
+      };
+      
+      new CountUp('count-members', dashboardData.kpis.members, options).start();
+      new CountUp('count-conversations', dashboardData.kpis.conversations, options).start();
+      new CountUp('count-hours', dashboardData.kpis.hoursSaved, options).start();
+      new CountUp('cost-saved', dashboardData.kpis.costSaved, options).start();
+    }
+    
+    // ========== 渲染熱門素材表格 ==========
+    function renderTopMaterials() {
+      const tbody = document.getElementById('top-materials');
+      tbody.innerHTML = dashboardData.topMaterials.map((item, idx) => `
+        <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
+          <td class="py-3">
+            ${item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : item.rank}
+          </td>
+          <td class="py-3 text-slate-200">${item.question}</td>
+          <td class="py-3 text-right text-cyan-400 font-mono hidden sm:table-cell">${item.hits}</td>
+          <td class="py-3 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <div class="w-16 bg-slate-800 rounded-full h-2">
+                <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 h-2 rounded-full transition-all duration-1000" 
+                     style="width: ${item.rate * 100}%"></div>
+              </div>
+              <span class="text-xs text-slate-400 w-10">${(item.rate * 100).toFixed(0)}%</span>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+    
+    // ========== 頁面載入 ==========
+    window.addEventListener('DOMContentLoaded', () => {
+    function renderOARanking() {
+      const container = document.getElementById('oa-ranking');
+      container.innerHTML = dashboardData.oaRanking.map((oa, idx) => {
+        const medal = oa.rank === 1 ? '🥇' : oa.rank === 2 ? '🥈' : oa.rank === 3 ? '🥉' : oa.rank;
+        const widthPercent = (oa.score / 100) * 100;
+        
+        return `
+          <div class="bg-slate-800/30 rounded-xl p-4 border border-slate-700/50">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="text-2xl">${medal}</div>
+                <div>
+                  <div class="font-bold text-lg">${oa.name} OA</div>
+                  <div class="text-xs text-slate-400">會員 ${oa.members} | 對話 ${oa.conversations} | 轉化 ${oa.conversions}</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-bold font-display text-cyan-400">${oa.score}</div>
+                <div class="text-xs text-slate-400">效率分</div>
+              </div>
+            </div>
+            <div class="bg-slate-900 rounded-full h-3 overflow-hidden">
+              <div class="progress-bar h-3 rounded-full bg-gradient-to-r from-cyan-600 to-lime-500 transition-all duration-1500" 
+                   style="width: 0%" data-width="${widthPercent}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      // 延遲觸發進度條動畫
+      setTimeout(() => {
+        document.querySelectorAll('#oa-ranking .progress-bar').forEach(bar => {
+          bar.style.width = bar.dataset.width;
+        });
+      }, 300);
+    }
+    
+    // ========== 圖表初始化 ==========
+    function initCharts() {
+      // 知識庫成長曲線
+      new Chart(document.getElementById('chart-knowledge-growth'), {
+        type: 'line',
+        data: {
+          labels: ['第1週', '第2週', '第3週', '第4週'],
+          datasets: [{
+            label: '新增素材',
+            data: [20, 25, 30, 20],
+            borderColor: 'rgb(6, 182, 212)',
+            backgroundColor: 'rgba(6, 182, 212, 0.1)',
+            tension: 0.4,
+            fill: true
+          }, {
+            label: '迭代素材',
+            data: [0, 3, 8, 12],
+            borderColor: 'rgb(132, 204, 22)',
+            backgroundColor: 'rgba(132, 204, 22, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#cbd5e1' } }
+          },
+          scales: {
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(100, 116, 139, 0.1)' } },
+            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(100, 116, 139, 0.1)' } }
+          }
+        }
+      });
+      
+      // 四時段分布
+      new Chart(document.getElementById('chart-time-distribution'), {
+        type: 'doughnut',
+        data: {
+          labels: ['早上 (06-12)', '下午 (12-18)', '晚上 (18-24)', '深夜 (00-06)'],
+          datasets: [{
+            data: [2341, 4567, 4891, 1092],
+            backgroundColor: [
+              'rgba(251, 191, 36, 0.8)',
+              'rgba(6, 182, 212, 0.8)',
+              'rgba(132, 204, 22, 0.8)',
+              'rgba(100, 116, 139, 0.6)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#cbd5e1', padding: 15 } }
+          }
+        }
+      });
+      
+      // 疑慮分布對比
+      new Chart(document.getElementById('chart-claim-distribution'), {
+        type: 'bar',
+        data: {
+          labels: ['信任建立', '自我懷疑', '比較疑慮'],
+          datasets: [{
+            label: '訪客',
+            data: [60, 25, 15],
+            backgroundColor: 'rgba(6, 182, 212, 0.8)'
+          }, {
+            label: '會員',
+            data: [10, 45, 45],
+            backgroundColor: 'rgba(132, 204, 22, 0.8)'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#cbd5e1' } }
+          },
+          scales: {
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(100, 116, 139, 0.1)' } },
+            x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+          }
+        }
+      });
+    }
+    
+    // ========== 頁面載入 ==========
+    window.addEventListener('DOMContentLoaded', () => {
+      // 初始化 Lucide icons
+      lucide.createIcons();
+      
+      // 初始化數字滾動
+      setTimeout(initCountUp, 300);
+      
+      // 渲染內容
+      renderTopMaterials();
+      renderOARanking();
+      
+      // 初始化圖表
+      setTimeout(initCharts, 500);
+    });
+  </script>
+</body>
+</html>

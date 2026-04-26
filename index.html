@@ -176,26 +176,27 @@
             height: 300px;
         }
         
-        /* 銀髮族友善表格 */
+        /* 銀髮族友善表格 - 增加行高和字體 */
         .senior-friendly-table {
-            font-size: 1.125rem;
-            line-height: 1.8;
+            font-size: 1.25rem;
+            line-height: 2;
         }
         
         .senior-friendly-table th {
-            font-size: 1.25rem;
-            padding: 1.5rem;
+            font-size: 1.375rem;
+            padding: 2rem 1.5rem;
         }
         
         .senior-friendly-table td {
-            padding: 1.25rem;
+            padding: 1.75rem 1.25rem;
         }
         
-        /* 3D 翻牌效果 - 點擊觸發 */
+        /* 3D 翻牌效果 - 修復翻轉問題 */
         .flip-card {
             perspective: 1000px;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
+            height: 320px; /* 固定高度 */
         }
         
         .flip-card-inner {
@@ -219,16 +220,37 @@
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             border-radius: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 垂直置中 */
+            padding: 2rem;
         }
         
         .flip-card-back {
             transform: rotateY(180deg);
         }
         
+        /* 環貫綠佳利解法卡片樣式 */
+        .flip-card-back h4 {
+            font-size: 1.5rem !important;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .flip-card-back ul {
+            text-align: left;
+        }
+        
+        .flip-card-back ul li {
+            font-size: 1.125rem;
+        }
+        
         /* 點擊提示 */
         .flip-hint {
             position: absolute;
             bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.5);
             animation: pulse 2s infinite;
@@ -329,7 +351,7 @@
     <!-- 第二幕：傳統三條路的困境（圖表版） -->
     <section id="three-paths" class="py-24 px-6 relative">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 fade-in-scroll">
                 <h2 class="display-2 font-black mb-6">
                     傳統的<span class="metallic-text">三條路</span>，都有問題
                 </h2>
@@ -340,7 +362,7 @@
             
             <div class="grid md:grid-cols-2 gap-8 mb-12">
                 <!-- 圖表 1：上班族收入被砍 -->
-                <div class="glass-card p-6 rounded-2xl glow-hover">
+                <div class="glass-card p-6 rounded-2xl glow-hover slide-in-left">
                     <h3 class="text-xl font-bold mb-2 text-center">💼 繼續上班</h3>
                     <p class="text-sm text-gray-400 mb-4 text-center">AI 後你的薪水剩多少？</p>
                     <div class="chart-container">
@@ -353,7 +375,7 @@
                 </div>
                 
                 <!-- 圖表 2：創業總成本（大數字嚇人）-->
-                <div class="glass-card p-6 rounded-2xl glow-hover">
+                <div class="glass-card p-6 rounded-2xl glow-hover slide-in-right">
                     <h3 class="text-xl font-bold mb-2 text-center">🏪 自己創業/加盟</h3>
                     <p class="text-sm text-gray-400 mb-4 text-center">準備多少錢才能開始？</p>
                     <div class="chart-container">
@@ -366,7 +388,7 @@
                 </div>
             </div>
             
-            <div class="text-center">
+            <div class="text-center fade-in-scroll">
                 <div class="glass-card inline-block px-8 py-6 rounded-2xl">
                     <p class="text-xl text-yellow-400 font-bold mb-2">
                         你發現了嗎？
@@ -387,7 +409,7 @@
     <!-- 核心：三選架構 -->
     <section class="py-24 px-6 bg-gradient-to-b from-transparent to-slate-900/50">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-20">
+            <div class="text-center mb-20 fade-in-scroll">
                 <div class="inline-block mb-6">
                     <span class="text-cyan-400 text-sm font-bold uppercase tracking-wider px-4 py-2 bg-cyan-400/10 rounded-full">
                         AI 時代的生存法則
@@ -403,7 +425,7 @@
 
             <!-- 選對市場（方向） -->
             <div class="mb-32">
-                <div class="text-center mb-12">
+                <div class="text-center mb-12 fade-in-scroll">
                     <div class="inline-flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center text-2xl">
                             🎯
@@ -415,7 +437,7 @@
 
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <!-- 左側：健康產業成長 -->
-                    <div>
+                    <div class="slide-in-left">
                         <div class="gradient-border p-1 rounded-3xl">
                             <div class="bg-slate-900 rounded-3xl p-8">
                                 <h4 class="text-2xl font-bold mb-6 text-center text-green-400">健康產業持續成長</h4>
@@ -428,7 +450,7 @@
                     </div>
 
                     <!-- 右側：薪資成長停滯 -->
-                    <div>
+                    <div class="slide-in-right">
                         <div class="gradient-border p-1 rounded-3xl">
                             <div class="bg-slate-900 rounded-3xl p-8">
                                 <h4 class="text-2xl font-bold mb-6 text-center text-red-400">薪資成長停滯</h4>
@@ -441,7 +463,7 @@
                     </div>
                 </div>
 
-                <div class="mt-12 text-center">
+                <div class="mt-12 text-center fade-in-scroll">
                     <div class="glass-card inline-block px-8 py-6 rounded-2xl max-w-2xl">
                         <p class="text-2xl font-bold mb-3">
                             <span class="text-green-400">健康產業年成長 8%</span> vs <span class="text-red-400">薪資成長 < 2%</span>
@@ -453,12 +475,12 @@
                 </div>
                 
                 <!-- 為什麼是健康產業 -->
-                <div class="mt-16">
+                <div class="mt-16 fade-in-scroll">
                     <div>
                         <h4 class="text-3xl font-bold mb-6">為什麼是<span class="text-green-400">健康產業</span>？</h4>
                         
                         <div class="space-y-6">
-                            <div class="glass-card p-6 rounded-2xl">
+                            <div class="glass-card p-6 rounded-2xl scale-in">
                                 <div class="flex items-start gap-4">
                                     <div class="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
                                         <span class="text-2xl">🤖</span>
@@ -470,7 +492,7 @@
                                 </div>
                             </div>
 
-                            <div class="glass-card p-6 rounded-2xl">
+                            <div class="glass-card p-6 rounded-2xl scale-in">
                                 <div class="flex items-start gap-4">
                                     <div class="w-10 h-10 bg-yellow-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
                                         <span class="text-2xl">👴</span>
@@ -482,7 +504,7 @@
                                 </div>
                             </div>
 
-                            <div class="glass-card p-6 rounded-2xl">
+                            <div class="glass-card p-6 rounded-2xl scale-in">
                                 <div class="flex items-start gap-4">
                                     <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
                                         <span class="text-2xl">💚</span>
@@ -506,7 +528,7 @@
 
             <!-- 選對平台（評估） -->
             <div class="mb-32">
-                <div class="text-center mb-12">
+                <div class="text-center mb-12 fade-in-scroll">
                     <div class="inline-flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center text-2xl">
                             ⚖️
@@ -516,12 +538,9 @@
                     <p class="text-xl text-gray-400">評估哪種模式最適合你</p>
                 </div>
 
-                <div class="gradient-border p-1 rounded-3xl mb-12">
+                <div class="gradient-border p-1 rounded-3xl mb-12 fade-in-scroll">
                     <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 md:p-12">
                         <h4 class="text-3xl font-bold mb-8 text-center">三種模式大比拼</h4>
-                        <p class="text-center text-gray-400 mb-8 text-lg">
-                            （用<strong class="text-yellow-400">白話文</strong>講，長輩也看得懂）
-                        </p>
 
                         <!-- 銀髮族友善表格 -->
                         <div class="overflow-x-auto">
@@ -570,15 +589,15 @@
                         </div>
 
                         <div class="mt-12 grid md:grid-cols-3 gap-6">
-                            <div class="p-6 bg-red-500/10 border border-red-500/30 rounded-2xl text-center">
+                            <div class="p-6 bg-red-500/10 border border-red-500/30 rounded-2xl text-center scale-in">
                                 <p class="text-red-400 font-bold mb-2">上班族</p>
                                 <p class="text-sm text-gray-400">安全但沒未來</p>
                             </div>
-                            <div class="p-6 bg-orange-500/10 border border-orange-500/30 rounded-2xl text-center">
+                            <div class="p-6 bg-orange-500/10 border border-orange-500/30 rounded-2xl text-center scale-in">
                                 <p class="text-orange-400 font-bold mb-2">開店創業</p>
                                 <p class="text-sm text-gray-400">自由但風險高</p>
                             </div>
-                            <div class="p-6 bg-green-500/20 border-2 border-green-500/50 rounded-2xl text-center">
+                            <div class="p-6 bg-green-500/20 border-2 border-green-500/50 rounded-2xl text-center scale-in">
                                 <p class="text-green-400 font-bold mb-2 text-lg">合作夥伴 ⭐</p>
                                 <p class="text-sm text-gray-300">零成本、可倍增、風險低</p>
                             </div>
@@ -587,7 +606,7 @@
                 </div>
 
                 <!-- 第一層：傳直銷的硬傷（翻牌效果） -->
-                <div class="mb-12">
+                <div class="mb-12 fade-in-scroll">
                     <div class="text-center mb-8">
                         <h5 class="text-2xl font-bold text-red-400 mb-2">
                             ⚠️ 傳統傳直銷有<span class="text-yellow-400">硬傷</span>（制度問題）
@@ -597,23 +616,24 @@
                     
                     <div class="grid md:grid-cols-3 gap-8">
                         <!-- 硬傷翻牌 1：進銷存送 -->
-                        <div class="flip-card h-80">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <!-- 正面：問題 -->
-                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-red-500/10 border-2 border-red-500/30">
-                                    <div class="text-5xl mb-4">📦</div>
-                                    <h3 class="text-xl font-bold mb-3 text-red-400">進銷存送</h3>
+                                <div class="flip-card-front glass-card bg-red-500/10 border-2 border-red-500/30">
+                                    <div class="text-5xl mb-4 text-center">📦</div>
+                                    <h3 class="text-xl font-bold mb-3 text-red-400 text-center">進銷存送</h3>
                                     <ul class="text-sm text-gray-300 space-y-2">
                                         <li>✗ 庫存成本壓力</li>
                                         <li>✗ 商品有效期限</li>
                                         <li>✗ 送貨成本</li>
                                         <li>✗ 囤貨風險</li>
                                     </ul>
+                                    <p class="flip-hint">點擊翻開</p>
                                 </div>
                                 <!-- 背面：解法 -->
-                                <div class="flip-card-back gradient-border p-6 flex flex-col justify-center bg-green-500/10">
-                                    <h4 class="text-lg font-bold mb-4 text-green-400">✓ 環貫綠佳利解法</h4>
-                                    <ul class="text-sm text-gray-200 space-y-3">
+                                <div class="flip-card-back gradient-border bg-green-500/10">
+                                    <h4 class="text-green-400">✓ 環貫綠佳利解法</h4>
+                                    <ul class="text-gray-200 space-y-3">
                                         <li class="flex items-start gap-2">
                                             <span class="text-green-400">•</span>
                                             <span><strong>不用囤貨</strong><br>公司直接出貨</span>
@@ -628,23 +648,24 @@
                         </div>
 
                         <!-- 硬傷翻牌 2：聘階責任額 -->
-                        <div class="flip-card h-80">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <!-- 正面：問題 -->
-                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-red-500/10 border-2 border-red-500/30">
-                                    <div class="text-5xl mb-4">💰</div>
-                                    <h3 class="text-xl font-bold mb-3 text-red-400">聘階責任額</h3>
+                                <div class="flip-card-front glass-card bg-red-500/10 border-2 border-red-500/30">
+                                    <div class="text-5xl mb-4 text-center">💰</div>
+                                    <h3 class="text-xl font-bold mb-3 text-red-400 text-center">聘階責任額</h3>
                                     <ul class="text-sm text-gray-300 space-y-2">
                                         <li>✗ 為了利潤差額</li>
                                         <li>✗ 要自己補業績</li>
                                         <li>✗ 沒達標就降級</li>
                                         <li>✗ 壓力山大</li>
                                     </ul>
+                                    <p class="flip-hint">點擊翻開</p>
                                 </div>
                                 <!-- 背面：解法 -->
-                                <div class="flip-card-back gradient-border p-6 flex flex-col justify-center bg-green-500/10">
-                                    <h4 class="text-lg font-bold mb-4 text-green-400">✓ 環貫綠佳利解法</h4>
-                                    <ul class="text-sm text-gray-200 space-y-3">
+                                <div class="flip-card-back gradient-border bg-green-500/10">
+                                    <h4 class="text-green-400">✓ 環貫綠佳利解法</h4>
+                                    <ul class="text-gray-200 space-y-3">
                                         <li class="flex items-start gap-2">
                                             <span class="text-green-400">•</span>
                                             <span><strong>無責任額</strong><br>做多少算多少</span>
@@ -659,23 +680,24 @@
                         </div>
 
                         <!-- 硬傷翻牌 3：代數限制 -->
-                        <div class="flip-card h-80">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <!-- 正面：問題 -->
-                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-red-500/10 border-2 border-red-500/30">
-                                    <div class="text-5xl mb-4">👤</div>
-                                    <h3 class="text-xl font-bold mb-3 text-red-400">代數限制</h3>
+                                <div class="flip-card-front glass-card bg-red-500/10 border-2 border-red-500/30">
+                                    <div class="text-5xl mb-4 text-center">👤</div>
+                                    <h3 class="text-xl font-bold mb-3 text-red-400 text-center">代數限制</h3>
                                     <ul class="text-sm text-gray-300 space-y-2">
                                         <li>✗ 個人英雄主義</li>
                                         <li>✗ 要自己發光發熱</li>
                                         <li>✗ 組織互助性差</li>
                                         <li>✗ 孤軍奮戰</li>
                                     </ul>
+                                    <p class="flip-hint">點擊翻開</p>
                                 </div>
                                 <!-- 背面：解法 -->
-                                <div class="flip-card-back gradient-border p-6 flex flex-col justify-center bg-green-500/10">
-                                    <h4 class="text-lg font-bold mb-4 text-green-400">✓ 環貫綠佳利解法</h4>
-                                    <ul class="text-sm text-gray-200 space-y-3">
+                                <div class="flip-card-back gradient-border bg-green-500/10">
+                                    <h4 class="text-green-400">✓ 環貫綠佳利解法</h4>
+                                    <ul class="text-gray-200 space-y-3">
                                         <li class="flex items-start gap-2">
                                             <span class="text-green-400">•</span>
                                             <span><strong>無代數限制</strong><br>組織互助性強</span>
@@ -698,7 +720,7 @@
                 </div>
 
                 <!-- 第二層：軟傷（翻牌效果） -->
-                <div class="mb-8">
+                <div class="mb-8 fade-in-scroll">
                     <div class="text-center mb-8">
                         <h5 class="text-2xl font-bold text-yellow-400 mb-2">
                             ⚠️ 但還有<span class="text-orange-400">軟傷</span>（能力問題）
@@ -708,18 +730,18 @@
                     
                     <div class="grid md:grid-cols-3 gap-8">
                         <!-- 軟傷翻牌 1：背不背得起來 -->
-                        <div class="flip-card h-80">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <!-- 正面：圖示 -->
-                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-yellow-500/10 border-2 border-yellow-500/30 relative">
-                                    <div class="text-6xl mb-4">📚</div>
-                                    <h3 class="text-2xl font-bold text-yellow-400">?</h3>
+                                <div class="flip-card-front glass-card bg-yellow-500/10 border-2 border-yellow-500/30">
+                                    <div class="text-6xl mb-4 text-center">📚</div>
+                                    <h3 class="text-2xl font-bold text-yellow-400 text-center">?</h3>
                                     <p class="flip-hint">點擊翻開</p>
                                 </div>
                                 <!-- 背面：問題描述 -->
-                                <div class="flip-card-back glass-card p-8 flex flex-col justify-center bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
-                                    <h4 class="text-2xl font-bold mb-6 text-yellow-400 text-center">背不背得起來</h4>
-                                    <div class="text-center text-gray-200 leading-relaxed space-y-3">
+                                <div class="flip-card-back glass-card bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
+                                    <h4 class="text-yellow-400">背不背得起來</h4>
+                                    <div class="text-gray-200 leading-relaxed space-y-3 text-center">
                                         <p class="text-lg">產品知識、成分功效<br>適用對象、禁忌事項...</p>
                                         <p class="text-xl font-bold text-white mt-4">要背好幾個月</p>
                                     </div>
@@ -728,18 +750,18 @@
                         </div>
 
                         <!-- 軟傷翻牌 2：能不能應用 -->
-                        <div class="flip-card h-80">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <!-- 正面：圖示 -->
-                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-yellow-500/10 border-2 border-yellow-500/30 relative">
-                                    <div class="text-6xl mb-4">🗣️</div>
-                                    <h3 class="text-2xl font-bold text-yellow-400">?</h3>
+                                <div class="flip-card-front glass-card bg-yellow-500/10 border-2 border-yellow-500/30">
+                                    <div class="text-6xl mb-4 text-center">🗣️</div>
+                                    <h3 class="text-2xl font-bold text-yellow-400 text-center">?</h3>
                                     <p class="flip-hint">點擊翻開</p>
                                 </div>
                                 <!-- 背面：問題描述 -->
-                                <div class="flip-card-back glass-card p-8 flex flex-col justify-center bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
-                                    <h4 class="text-2xl font-bold mb-6 text-yellow-400 text-center">能不能應用</h4>
-                                    <div class="text-center text-gray-200 leading-relaxed space-y-3">
+                                <div class="flip-card-back glass-card bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
+                                    <h4 class="text-yellow-400">能不能應用</h4>
+                                    <div class="text-gray-200 leading-relaxed space-y-3 text-center">
                                         <p class="text-lg">口才、表達、說服力<br>臨場反應...</p>
                                         <p class="text-xl font-bold text-white mt-4">不是每個人都會講話</p>
                                     </div>
@@ -748,18 +770,18 @@
                         </div>
 
                         <!-- 軟傷翻牌 3：疑慮會不會處理 -->
-                        <div class="flip-card h-80">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <!-- 正面：圖示 -->
-                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-yellow-500/10 border-2 border-yellow-500/30 relative">
-                                    <div class="text-6xl mb-4">❓</div>
-                                    <h3 class="text-2xl font-bold text-yellow-400">?</h3>
+                                <div class="flip-card-front glass-card bg-yellow-500/10 border-2 border-yellow-500/30">
+                                    <div class="text-6xl mb-4 text-center">❓</div>
+                                    <h3 class="text-2xl font-bold text-yellow-400 text-center">?</h3>
                                     <p class="flip-hint">點擊翻開</p>
                                 </div>
                                 <!-- 背面：問題描述 -->
-                                <div class="flip-card-back glass-card p-8 flex flex-col justify-center bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
-                                    <h4 class="text-2xl font-bold mb-6 text-yellow-400 text-center">疑慮會不會處理</h4>
-                                    <div class="text-center text-gray-200 leading-relaxed space-y-3">
+                                <div class="flip-card-back glass-card bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
+                                    <h4 class="text-yellow-400">疑慮會不會處理</h4>
+                                    <div class="text-gray-200 leading-relaxed space-y-3 text-center">
                                         <p class="text-lg">客戶問題千奇百怪<br>售後服務...</p>
                                         <p class="text-xl font-bold text-white mt-4">回答慢客戶就跑了</p>
                                     </div>
@@ -776,7 +798,7 @@
                 </div>
 
                 <!-- 最終結論 -->
-                <div class="p-6 bg-blue-500/10 border-2 border-blue-500/30 rounded-2xl text-center">
+                <div class="p-6 bg-blue-500/10 border-2 border-blue-500/30 rounded-2xl text-center fade-in-scroll">
                     <p class="text-blue-400 font-bold text-xl mb-2">
                         ✓ 商業模式：環貫綠佳利（合作夥伴制）
                     </p>
@@ -791,7 +813,7 @@
 
             <!-- 選對工具（變現） -->
             <div>
-                <div class="text-center mb-12">
+                <div class="text-center mb-12 fade-in-scroll">
                     <div class="inline-flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center text-2xl">
                             🛠️
@@ -801,7 +823,7 @@
                     <p class="text-xl text-gray-400">降低門檻，馬上<span class="text-yellow-400 font-bold">變現</span></p>
                 </div>
 
-                <div class="gradient-border p-1 rounded-3xl">
+                <div class="gradient-border p-1 rounded-3xl fade-in-scroll">
                     <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-12">
                         <div class="text-center mb-12">
                             <div class="inline-flex items-center gap-2 bg-yellow-500/20 text-yellow-400 px-6 py-3 rounded-full font-bold mb-6">
@@ -819,7 +841,7 @@
 
                         <div class="max-w-6xl mx-auto space-y-12 mb-12">
                             <!-- 場景 1：客戶問產品，AI 秒回 -->
-                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="grid md:grid-cols-2 gap-8 items-center slide-in-left">
                                 <!-- 左側：圖片 -->
                                 <div class="order-2 md:order-1">
                                     <div class="aspect-[4/3] rounded-2xl overflow-hidden border-4 border-green-500/30 bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center">
@@ -860,7 +882,7 @@
                             </div>
 
                             <!-- 場景 2：半夜客戶來訊，AI 照樣服務 -->
-                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="grid md:grid-cols-2 gap-8 items-center slide-in-right">
                                 <!-- 左側：文字說明 -->
                                 <div class="order-1">
                                     <div class="inline-flex items-center gap-2 bg-purple-500/20 px-4 py-2 rounded-full mb-4">
@@ -901,7 +923,7 @@
                             </div>
 
                             <!-- 場景 3：複雜問題，AI 給清楚對比 -->
-                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="grid md:grid-cols-2 gap-8 items-center slide-in-left">
                                 <!-- 左側：圖片 -->
                                 <div class="order-2 md:order-1">
                                     <div class="aspect-[4/3] rounded-2xl overflow-hidden border-4 border-cyan-500/30 bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center">
@@ -972,7 +994,7 @@
     <!-- 關於我 -->
     <section class="py-24 px-6">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 fade-in-scroll">
                 <h2 class="display-2 font-black mb-6">
                     我是<span class="metallic-text">游育杰</span>
                 </h2>
@@ -983,7 +1005,7 @@
             
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <!-- 左側：照片 -->
-                <div class="relative">
+                <div class="relative slide-in-left">
                     <div class="aspect-square rounded-3xl overflow-hidden shadow-2xl border-4 border-yellow-500/30">
                         <img src="https://pub-ca5c7006c31d41398cd049593f8fa344.r2.dev/NP/%E5%80%8B%E4%BA%BA%E5%B0%81%E9%9D%A2%E7%85%A7.png" alt="游育杰" class="w-full h-full object-cover">
                     </div>
@@ -994,7 +1016,7 @@
                 </div>
                 
                 <!-- 右側：介紹 -->
-                <div>
+                <div class="slide-in-right">
                     <div class="glass-card p-8 rounded-2xl mb-6">
                         <h4 class="text-xl font-bold mb-4">過去：派車系統專家</h4>
                         <p class="text-gray-300 leading-relaxed">
@@ -1023,7 +1045,7 @@
 
     <!-- CTA：探索可能 -->
     <section class="py-24 px-6 bg-gradient-to-b from-transparent to-slate-900">
-        <div class="max-w-4xl mx-auto text-center">
+        <div class="max-w-4xl mx-auto text-center fade-in-scroll">
             <h2 class="display-2 font-black mb-6">
                 如果你也在思考<span class="metallic-text">未來的出路</span>
             </h2>

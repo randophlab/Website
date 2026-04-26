@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>變現你的人生閱歷 | 游育杰</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --luxury-gold: #d4af37;
+            --deep-navy: #0a0e27;
+            --accent-cyan: #00d9ff;
+            --soft-white: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background: var(--deep-navy);
+            color: var(--soft-white);
+            overflow-x: hidden;
+        }
+        
+        /* 奢華漸層背景 */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+            position: relative;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        /* 金屬質感文字 */
+        .metallic-text {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #d4af37 50%, #ffed4e 75%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+        
+        /* 毛玻璃效果 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        
+        /* 懸浮光暈效果 */
+        .glow-hover {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .glow-hover::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--luxury-gold), var(--accent-cyan));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .glow-hover:hover::before {
+            opacity: 1;
+        }
+        
+        .glow-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* 高級按鈕 */
+        .luxury-btn {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--luxury-gold), #f4d03f);
+            transition: all 0.3s ease;
+        }
+        
+        .luxury-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .luxury-btn:hover::before {
+            left: 100%;
+        }
+        
+        .luxury-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* 漸層邊框 */
+        .gradient-border {
+            position: relative;
+            background: rgba(10, 14, 39, 0.8);
+            border-radius: 1.5rem;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1.5rem;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--luxury-gold), var(--accent-cyan), var(--luxury-gold));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+        
+        /* 響應式字體 */
+        .display-1 { font-size: clamp(2.5rem, 8vw, 5rem); }
+        .display-2 { font-size: clamp(2rem, 6vw, 3.5rem); }
+        .body-lg { font-size: clamp(1.125rem, 2.5vw, 1.375rem); }
+        
+        /* 載入動畫 */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 延遲動畫 */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        
+        /* Chart.js 容器 */
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        /* 銀髮族友善表格 */
+        .senior-friendly-table {
+            font-size: 1.125rem;
+            line-height: 1.8;
+        }
+        
+        .senior-friendly-table th {
+            font-size: 1.25rem;
+            padding: 1.5rem;
+        }
+        
+        .senior-friendly-table td {
+            padding: 1.25rem;
+        }
+        
+        /* 3D 翻牌效果 - 點擊觸發 */
+        .flip-card {
+            perspective: 1000px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        /* 點擊後翻轉 */
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+        }
+        
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        
+        /* 點擊提示 */
+        .flip-hint {
+            position: absolute;
+            bottom: 1rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* 滾動觸發動畫 */
+        .fade-in-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in-scroll.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 放大動畫 */
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .scale-in.animate-in {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* 從左進入 */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-in-left.animate-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* 從右進入 */
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-in-right.animate-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 第一幕：AI 時代的焦慮 -->
+    <section class="hero-gradient min-h-screen flex items-center justify-center px-6 py-20 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="mb-12 fade-in-up">
+                <h1 class="display-1 font-black mb-6 leading-tight">
+                    AI 時代來了<br>
+                    <span class="metallic-text">你的工作還安全嗎？</span>
+                </h1>
+                
+                <p class="body-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+                    ChatGPT 寫文案、AI 做設計、自動化取代人力...<br>
+                    <strong class="text-white">固定薪水不再是鐵飯碗</strong>，<br>
+                    但<span class="text-cyan-400">創業成本又太高</span>。
+                </p>
+                
+                <p class="text-xl text-yellow-400 font-bold mb-12">
+                    那麼，普通人該如何在 AI 時代活下來？
+                </p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up delay-2">
+                <a href="#three-paths" class="luxury-btn text-gray-900 font-bold px-10 py-5 rounded-full text-lg shadow-2xl inline-flex items-center justify-center gap-3 min-h-[60px]">
+                    我想知道答案
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 底部滾動提示 -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- 第二幕：傳統三條路的困境（圖表版） -->
+    <section id="three-paths" class="py-24 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="display-2 font-black mb-6">
+                    傳統的<span class="metallic-text">三條路</span>，都有問題
+                </h2>
+                <p class="body-lg text-gray-400">
+                    數據告訴你真相：這些路都走不通
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- 圖表 1：上班族收入被砍 -->
+                <div class="glass-card p-6 rounded-2xl glow-hover">
+                    <h3 class="text-xl font-bold mb-2 text-center">💼 繼續上班</h3>
+                    <p class="text-sm text-gray-400 mb-4 text-center">AI 後你的薪水剩多少？</p>
+                    <div class="chart-container">
+                        <canvas id="chart-salary"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-red-400 font-bold text-lg">平均被砍 40-60%</p>
+                        <p class="text-xs text-gray-500">資料來源：麥肯錫 2024 AI 衝擊報告</p>
+                    </div>
+                </div>
+                
+                <!-- 圖表 2：創業總成本（大數字嚇人）-->
+                <div class="glass-card p-6 rounded-2xl glow-hover">
+                    <h3 class="text-xl font-bold mb-2 text-center">🏪 自己創業/加盟</h3>
+                    <p class="text-sm text-gray-400 mb-4 text-center">準備多少錢才能開始？</p>
+                    <div class="chart-container">
+                        <canvas id="chart-startup-total"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-orange-400 font-bold text-lg">最少準備 <span class="counter" data-target="80">0</span>-<span class="counter" data-target="250">0</span> 萬</p>
+                        <p class="text-xs text-gray-500">包含啟動金 + 前 6 個月週轉</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="glass-card inline-block px-8 py-6 rounded-2xl">
+                    <p class="text-xl text-yellow-400 font-bold mb-2">
+                        你發現了嗎？
+                    </p>
+                    <p class="text-gray-300 text-lg">
+                        這些路都有一個共同問題：<strong class="text-white">「高成本、高風險、難倍增」</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 分隔線 -->
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent"></div>
+    </div>
+
+    <!-- 核心：三選架構 -->
+    <section class="py-24 px-6 bg-gradient-to-b from-transparent to-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20">
+                <div class="inline-block mb-6">
+                    <span class="text-cyan-400 text-sm font-bold uppercase tracking-wider px-4 py-2 bg-cyan-400/10 rounded-full">
+                        AI 時代的生存法則
+                    </span>
+                </div>
+                <h2 class="display-1 font-black mb-6">
+                    成功需要<span class="metallic-text">三選</span>
+                </h2>
+                <p class="body-lg text-gray-400 max-w-3xl mx-auto">
+                    選對方向、評估自身、掌握工具 → 開始變現
+                </p>
+            </div>
+
+            <!-- 選對市場（方向） -->
+            <div class="mb-32">
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center text-2xl">
+                            🎯
+                        </div>
+                        <h3 class="text-4xl font-black">選對<span class="text-green-400">市場</span></h3>
+                    </div>
+                    <p class="text-xl text-gray-400">方向對了，努力才有意義</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- 左側：健康產業成長 -->
+                    <div>
+                        <div class="gradient-border p-1 rounded-3xl">
+                            <div class="bg-slate-900 rounded-3xl p-8">
+                                <h4 class="text-2xl font-bold mb-6 text-center text-green-400">健康產業持續成長</h4>
+                                <div class="chart-container" style="height: 350px;">
+                                    <canvas id="chart-health-market"></canvas>
+                                </div>
+                                <p class="text-center text-sm text-gray-400 mt-4">預防保健 + 再生醫學市場規模</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右側：薪資成長停滯 -->
+                    <div>
+                        <div class="gradient-border p-1 rounded-3xl">
+                            <div class="bg-slate-900 rounded-3xl p-8">
+                                <h4 class="text-2xl font-bold mb-6 text-center text-red-400">薪資成長停滯</h4>
+                                <div class="chart-container" style="height: 350px;">
+                                    <canvas id="chart-salary-growth"></canvas>
+                                </div>
+                                <p class="text-center text-sm text-gray-400 mt-4">AI 前後的薪資成長率對比</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <div class="glass-card inline-block px-8 py-6 rounded-2xl max-w-2xl">
+                        <p class="text-2xl font-bold mb-3">
+                            <span class="text-green-400">健康產業年成長 8%</span> vs <span class="text-red-400">薪資成長 < 2%</span>
+                        </p>
+                        <p class="text-gray-300 text-lg">
+                            選對市場，才能逆勢成長
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 為什麼是健康產業 -->
+                <div class="mt-16">
+                    <div>
+                        <h4 class="text-3xl font-bold mb-6">為什麼是<span class="text-green-400">健康產業</span>？</h4>
+                        
+                        <div class="space-y-6">
+                            <div class="glass-card p-6 rounded-2xl">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <span class="text-2xl">🤖</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold mb-2">AI 不會花錢，人只能賺人的錢</h5>
+                                        <p class="text-sm text-gray-400">AI 取代了工作，但不會消費產品。市場永遠在「人」身上。</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-card p-6 rounded-2xl">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-yellow-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <span class="text-2xl">👴</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold mb-2">人終究會經歷「生老病死」</h5>
+                                        <p class="text-sm text-gray-400">不論賺多少錢，當「病」來臨，再多錢都得花。</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-card p-6 rounded-2xl">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <span class="text-2xl">💚</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold mb-2">預防 + 再生 = 永續商機</h5>
+                                        <p class="text-sm text-gray-400">健康是唯一不會被 AI 取代、永遠有需求的市場。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 p-6 bg-green-500/10 border-2 border-green-500/30 rounded-2xl">
+                            <p class="text-green-400 font-bold text-lg text-center">
+                                ✓ 市場方向：預防再生健康產業
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 選對平台（評估） -->
+            <div class="mb-32">
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center text-2xl">
+                            ⚖️
+                        </div>
+                        <h3 class="text-4xl font-black">選對<span class="text-blue-400">平台</span></h3>
+                    </div>
+                    <p class="text-xl text-gray-400">評估哪種模式最適合你</p>
+                </div>
+
+                <div class="gradient-border p-1 rounded-3xl mb-12">
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 md:p-12">
+                        <h4 class="text-3xl font-bold mb-8 text-center">三種模式大比拼</h4>
+                        <p class="text-center text-gray-400 mb-8 text-lg">
+                            （用<strong class="text-yellow-400">白話文</strong>講，長輩也看得懂）
+                        </p>
+
+                        <!-- 銀髮族友善表格 -->
+                        <div class="overflow-x-auto">
+                            <table class="senior-friendly-table w-full">
+                                <thead>
+                                    <tr class="border-b-2 border-yellow-500/30">
+                                        <th class="text-left text-yellow-400">比較<br>項目</th>
+                                        <th class="text-center">上班領薪水</th>
+                                        <th class="text-center">自己開店</th>
+                                        <th class="text-center bg-green-500/10">合作夥伴<br><span class="text-sm text-gray-400">(傳直銷)</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-300">
+                                    <tr class="border-b border-white/10">
+                                        <td class="font-bold">啟動成本</td>
+                                        <td class="text-center">零成本</td>
+                                        <td class="text-center text-red-400">80-250 萬</td>
+                                        <td class="text-center bg-green-500/5 text-green-400">零成本</td>
+                                    </tr>
+                                    <tr class="border-b border-white/10">
+                                        <td class="font-bold">時間自由</td>
+                                        <td class="text-center text-red-400">✗ 要打卡</td>
+                                        <td class="text-center text-yellow-400">△ 被店綁死</td>
+                                        <td class="text-center bg-green-500/5 text-green-400">✓ 自己安排</td>
+                                    </tr>
+                                    <tr class="border-b border-white/10">
+                                        <td class="font-bold">風險</td>
+                                        <td class="text-center text-yellow-400">被裁員</td>
+                                        <td class="text-center text-red-400">賠錢倒閉</td>
+                                        <td class="text-center bg-green-500/5 text-green-400">論件計酬</td>
+                                    </tr>
+                                    <tr class="border-b border-white/10">
+                                        <td class="font-bold">收入上限</td>
+                                        <td class="text-center text-red-400">固定薪水</td>
+                                        <td class="text-center text-yellow-400">看生意好壞</td>
+                                        <td class="text-center bg-green-500/5 text-green-400">可以倍增</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">能不能倍增</td>
+                                        <td class="text-center text-red-400">✗ 一份薪水</td>
+                                        <td class="text-center text-red-400">✗ 人力有限</td>
+                                        <td class="text-center bg-green-500/5 text-green-400">✓ 建團隊賺獎金</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-12 grid md:grid-cols-3 gap-6">
+                            <div class="p-6 bg-red-500/10 border border-red-500/30 rounded-2xl text-center">
+                                <p class="text-red-400 font-bold mb-2">上班族</p>
+                                <p class="text-sm text-gray-400">安全但沒未來</p>
+                            </div>
+                            <div class="p-6 bg-orange-500/10 border border-orange-500/30 rounded-2xl text-center">
+                                <p class="text-orange-400 font-bold mb-2">開店創業</p>
+                                <p class="text-sm text-gray-400">自由但風險高</p>
+                            </div>
+                            <div class="p-6 bg-green-500/20 border-2 border-green-500/50 rounded-2xl text-center">
+                                <p class="text-green-400 font-bold mb-2 text-lg">合作夥伴 ⭐</p>
+                                <p class="text-sm text-gray-300">零成本、可倍增、風險低</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第一層：傳直銷的硬傷（翻牌效果） -->
+                <div class="mb-12">
+                    <div class="text-center mb-8">
+                        <h5 class="text-2xl font-bold text-red-400 mb-2">
+                            ⚠️ 傳統傳直銷有<span class="text-yellow-400">硬傷</span>（制度問題）
+                        </h5>
+                        <p class="text-gray-400">點擊卡片看環貫綠佳利如何解決</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- 硬傷翻牌 1：進銷存送 -->
+                        <div class="flip-card h-80">
+                            <div class="flip-card-inner">
+                                <!-- 正面：問題 -->
+                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-red-500/10 border-2 border-red-500/30">
+                                    <div class="text-5xl mb-4">📦</div>
+                                    <h3 class="text-xl font-bold mb-3 text-red-400">進銷存送</h3>
+                                    <ul class="text-sm text-gray-300 space-y-2">
+                                        <li>✗ 庫存成本壓力</li>
+                                        <li>✗ 商品有效期限</li>
+                                        <li>✗ 送貨成本</li>
+                                        <li>✗ 囤貨風險</li>
+                                    </ul>
+                                </div>
+                                <!-- 背面：解法 -->
+                                <div class="flip-card-back gradient-border p-6 flex flex-col justify-center bg-green-500/10">
+                                    <h4 class="text-lg font-bold mb-4 text-green-400">✓ 環貫綠佳利解法</h4>
+                                    <ul class="text-sm text-gray-200 space-y-3">
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-400">•</span>
+                                            <span><strong>不用囤貨</strong><br>公司直接出貨</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-400">•</span>
+                                            <span><strong>零庫存壓力</strong><br>專心做服務</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 硬傷翻牌 2：聘階責任額 -->
+                        <div class="flip-card h-80">
+                            <div class="flip-card-inner">
+                                <!-- 正面：問題 -->
+                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-red-500/10 border-2 border-red-500/30">
+                                    <div class="text-5xl mb-4">💰</div>
+                                    <h3 class="text-xl font-bold mb-3 text-red-400">聘階責任額</h3>
+                                    <ul class="text-sm text-gray-300 space-y-2">
+                                        <li>✗ 為了利潤差額</li>
+                                        <li>✗ 要自己補業績</li>
+                                        <li>✗ 沒達標就降級</li>
+                                        <li>✗ 壓力山大</li>
+                                    </ul>
+                                </div>
+                                <!-- 背面：解法 -->
+                                <div class="flip-card-back gradient-border p-6 flex flex-col justify-center bg-green-500/10">
+                                    <h4 class="text-lg font-bold mb-4 text-green-400">✓ 環貫綠佳利解法</h4>
+                                    <ul class="text-sm text-gray-200 space-y-3">
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-400">•</span>
+                                            <span><strong>無責任額</strong><br>做多少算多少</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-400">•</span>
+                                            <span><strong>不用補業績</strong><br>輕鬆無負擔</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 硬傷翻牌 3：代數限制 -->
+                        <div class="flip-card h-80">
+                            <div class="flip-card-inner">
+                                <!-- 正面：問題 -->
+                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-red-500/10 border-2 border-red-500/30">
+                                    <div class="text-5xl mb-4">👤</div>
+                                    <h3 class="text-xl font-bold mb-3 text-red-400">代數限制</h3>
+                                    <ul class="text-sm text-gray-300 space-y-2">
+                                        <li>✗ 個人英雄主義</li>
+                                        <li>✗ 要自己發光發熱</li>
+                                        <li>✗ 組織互助性差</li>
+                                        <li>✗ 孤軍奮戰</li>
+                                    </ul>
+                                </div>
+                                <!-- 背面：解法 -->
+                                <div class="flip-card-back gradient-border p-6 flex flex-col justify-center bg-green-500/10">
+                                    <h4 class="text-lg font-bold mb-4 text-green-400">✓ 環貫綠佳利解法</h4>
+                                    <ul class="text-sm text-gray-200 space-y-3">
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-400">•</span>
+                                            <span><strong>無代數限制</strong><br>組織互助性強</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-400">•</span>
+                                            <span><strong>團隊成長</strong><br>長期穩定發展</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-8 py-6 glass-card rounded-xl">
+                        <p class="text-green-400 font-bold text-xl">
+                            ✓ 環貫綠佳利已經解決硬傷！不浪費你的時間
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 第二層：軟傷（翻牌效果） -->
+                <div class="mb-8">
+                    <div class="text-center mb-8">
+                        <h5 class="text-2xl font-bold text-yellow-400 mb-2">
+                            ⚠️ 但還有<span class="text-orange-400">軟傷</span>（能力問題）
+                        </h5>
+                        <p class="text-gray-400">點擊卡片看 LINE AI 如何解決</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- 軟傷翻牌 1：背不背得起來 -->
+                        <div class="flip-card h-80">
+                            <div class="flip-card-inner">
+                                <!-- 正面：圖示 -->
+                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-yellow-500/10 border-2 border-yellow-500/30 relative">
+                                    <div class="text-6xl mb-4">📚</div>
+                                    <h3 class="text-2xl font-bold text-yellow-400">?</h3>
+                                    <p class="flip-hint">點擊翻開</p>
+                                </div>
+                                <!-- 背面：問題描述 -->
+                                <div class="flip-card-back glass-card p-8 flex flex-col justify-center bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
+                                    <h4 class="text-2xl font-bold mb-6 text-yellow-400 text-center">背不背得起來</h4>
+                                    <div class="text-center text-gray-200 leading-relaxed space-y-3">
+                                        <p class="text-lg">產品知識、成分功效<br>適用對象、禁忌事項...</p>
+                                        <p class="text-xl font-bold text-white mt-4">要背好幾個月</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 軟傷翻牌 2：能不能應用 -->
+                        <div class="flip-card h-80">
+                            <div class="flip-card-inner">
+                                <!-- 正面：圖示 -->
+                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-yellow-500/10 border-2 border-yellow-500/30 relative">
+                                    <div class="text-6xl mb-4">🗣️</div>
+                                    <h3 class="text-2xl font-bold text-yellow-400">?</h3>
+                                    <p class="flip-hint">點擊翻開</p>
+                                </div>
+                                <!-- 背面：問題描述 -->
+                                <div class="flip-card-back glass-card p-8 flex flex-col justify-center bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
+                                    <h4 class="text-2xl font-bold mb-6 text-yellow-400 text-center">能不能應用</h4>
+                                    <div class="text-center text-gray-200 leading-relaxed space-y-3">
+                                        <p class="text-lg">口才、表達、說服力<br>臨場反應...</p>
+                                        <p class="text-xl font-bold text-white mt-4">不是每個人都會講話</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 軟傷翻牌 3：疑慮會不會處理 -->
+                        <div class="flip-card h-80">
+                            <div class="flip-card-inner">
+                                <!-- 正面：圖示 -->
+                                <div class="flip-card-front glass-card p-6 flex flex-col items-center justify-center text-center bg-yellow-500/10 border-2 border-yellow-500/30 relative">
+                                    <div class="text-6xl mb-4">❓</div>
+                                    <h3 class="text-2xl font-bold text-yellow-400">?</h3>
+                                    <p class="flip-hint">點擊翻開</p>
+                                </div>
+                                <!-- 背面：問題描述 -->
+                                <div class="flip-card-back glass-card p-8 flex flex-col justify-center bg-gradient-to-br from-amber-900/20 to-slate-900/80 border-2 border-yellow-500/30">
+                                    <h4 class="text-2xl font-bold mb-6 text-yellow-400 text-center">疑慮會不會處理</h4>
+                                    <div class="text-center text-gray-200 leading-relaxed space-y-3">
+                                        <p class="text-lg">客戶問題千奇百怪<br>售後服務...</p>
+                                        <p class="text-xl font-bold text-white mt-4">回答慢客戶就跑了</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-8 py-6 glass-card rounded-xl">
+                        <p class="text-gray-300 text-lg">
+                            過去，<strong class="text-yellow-400">不管是不是綠佳利</strong>，所有傳直銷都有這個問題
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 最終結論 -->
+                <div class="p-6 bg-blue-500/10 border-2 border-blue-500/30 rounded-2xl text-center">
+                    <p class="text-blue-400 font-bold text-xl mb-2">
+                        ✓ 商業模式：環貫綠佳利（合作夥伴制）
+                    </p>
+                    <p class="text-gray-300 text-lg">
+                        <span class="text-green-400">硬傷已解決</span>，但<span class="text-yellow-400">軟傷需要工具</span>
+                    </p>
+                    <p class="text-white font-bold text-lg mt-2">
+                        接下來，就是「選對工具」的時候了 →
+                    </p>
+                </div>
+            </div>
+
+            <!-- 選對工具（變現） -->
+            <div>
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center text-2xl">
+                            🛠️
+                        </div>
+                        <h3 class="text-4xl font-black">選對<span class="text-purple-400">工具</span></h3>
+                    </div>
+                    <p class="text-xl text-gray-400">降低門檻，馬上<span class="text-yellow-400 font-bold">變現</span></p>
+                </div>
+
+                <div class="gradient-border p-1 rounded-3xl">
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-12">
+                        <div class="text-center mb-12">
+                            <div class="inline-flex items-center gap-2 bg-yellow-500/20 text-yellow-400 px-6 py-3 rounded-full font-bold mb-6">
+                                <div class="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                                魷魚設計的 AI 解決軟傷
+                            </div>
+                            
+                            <h3 class="text-3xl md:text-4xl font-black mb-4">
+                                LINE AI 完美解決<span class="text-green-400">能力問題</span>
+                            </h3>
+                            <p class="text-xl text-gray-300">
+                                用視覺化的方式，讓你秒懂 AI 如何幫你變現
+                            </p>
+                        </div>
+
+                        <div class="max-w-6xl mx-auto space-y-12 mb-12">
+                            <!-- 場景 1：客戶問產品，AI 秒回 -->
+                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                                <!-- 左側：圖片 -->
+                                <div class="order-2 md:order-1">
+                                    <div class="aspect-[4/3] rounded-2xl overflow-hidden border-4 border-green-500/30 bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center">
+                                        <!-- 圖片佔位：800x600px -->
+                                        <div class="text-center p-8">
+                                            <p class="text-gray-400 mb-2">📱 場景圖片位置</p>
+                                            <p class="text-sm text-gray-500 mb-4">建議尺寸：800x600px</p>
+                                            <div class="text-left text-xs text-gray-500 space-y-1">
+                                                <p>✓ LINE 對話截圖</p>
+                                                <p>✓ 客戶問產品問題</p>
+                                                <p>✓ AI 秒速回覆專業答案</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 右側：文字說明 -->
+                                <div class="order-1 md:order-2">
+                                    <div class="inline-flex items-center gap-2 bg-green-500/20 px-4 py-2 rounded-full mb-4">
+                                        <span class="text-green-400 font-bold">解決方案 1</span>
+                                    </div>
+                                    <h4 class="text-3xl font-bold mb-4">
+                                        不用背知識<br><span class="text-green-400">AI 都記得</span>
+                                    </h4>
+                                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                                        客戶問什麼產品、成分、功效、適用對象...<br>
+                                        <strong class="text-white">AI 3 秒內給出專業答案</strong>
+                                    </p>
+                                    <div class="p-6 bg-green-500/10 border-l-4 border-green-500 rounded-xl">
+                                        <p class="text-green-300 font-bold mb-2">✓ 實際效果</p>
+                                        <ul class="text-sm text-gray-300 space-y-2">
+                                            <li>• 100+ 專業問題自動回答</li>
+                                            <li>• 比你背得更完整、更準確</li>
+                                            <li>• 新手第一天就像專家</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 場景 2：半夜客戶來訊，AI 照樣服務 -->
+                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                                <!-- 左側：文字說明 -->
+                                <div class="order-1">
+                                    <div class="inline-flex items-center gap-2 bg-purple-500/20 px-4 py-2 rounded-full mb-4">
+                                        <span class="text-purple-400 font-bold">解決方案 2</span>
+                                    </div>
+                                    <h4 class="text-3xl font-bold mb-4">
+                                        24 小時在線<br><span class="text-purple-400">你睡覺 AI 幫你服務</span>
+                                    </h4>
+                                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                                        凌晨 2 點客戶來訊？週末客戶有問題？<br>
+                                        <strong class="text-white">AI 永遠在線，秒速回覆</strong>
+                                    </p>
+                                    <div class="p-6 bg-purple-500/10 border-l-4 border-purple-500 rounded-xl">
+                                        <p class="text-purple-300 font-bold mb-2">✓ 實際效果</p>
+                                        <ul class="text-sm text-gray-300 space-y-2">
+                                            <li>• 不會因為回覆慢流失客戶</li>
+                                            <li>• 不用 24 小時待命</li>
+                                            <li>• 你休息，業務照樣跑</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- 右側：圖片 -->
+                                <div class="order-2">
+                                    <div class="aspect-[4/3] rounded-2xl overflow-hidden border-4 border-purple-500/30 bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center">
+                                        <!-- 圖片佔位：800x600px -->
+                                        <div class="text-center p-8">
+                                            <p class="text-gray-400 mb-2">🌙 場景圖片位置</p>
+                                            <p class="text-sm text-gray-500 mb-4">建議尺寸：800x600px</p>
+                                            <div class="text-left text-xs text-gray-500 space-y-1">
+                                                <p>✓ LINE 對話截圖</p>
+                                                <p>✓ 顯示凌晨時間戳（例如 02:15）</p>
+                                                <p>✓ AI 依然在回覆客戶</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 場景 3：複雜問題，AI 給清楚對比 -->
+                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                                <!-- 左側：圖片 -->
+                                <div class="order-2 md:order-1">
+                                    <div class="aspect-[4/3] rounded-2xl overflow-hidden border-4 border-cyan-500/30 bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center">
+                                        <!-- 圖片佔位：800x600px -->
+                                        <div class="text-center p-8">
+                                            <p class="text-gray-400 mb-2">💬 場景圖片位置</p>
+                                            <p class="text-sm text-gray-500 mb-4">建議尺寸：800x600px</p>
+                                            <div class="text-left text-xs text-gray-500 space-y-1">
+                                                <p>✓ LINE 對話截圖</p>
+                                                <p>✓ 客戶問產品比較</p>
+                                                <p>✓ AI 給清楚的對比表/說明</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 右側：文字說明 -->
+                                <div class="order-1 md:order-2">
+                                    <div class="inline-flex items-center gap-2 bg-cyan-500/20 px-4 py-2 rounded-full mb-4">
+                                        <span class="text-cyan-400 font-bold">解決方案 3</span>
+                                    </div>
+                                    <h4 class="text-3xl font-bold mb-4">
+                                        專業回答<br><span class="text-cyan-400">不用口才</span>
+                                    </h4>
+                                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                                        客戶問複雜的產品比較？適用對象？副作用？<br>
+                                        <strong class="text-white">AI 用文字給出專業且有說服力的答案</strong>
+                                    </p>
+                                    <div class="p-6 bg-cyan-500/10 border-l-4 border-cyan-500 rounded-xl">
+                                        <p class="text-cyan-300 font-bold mb-2">✓ 實際效果</p>
+                                        <ul class="text-sm text-gray-300 space-y-2">
+                                            <li>• 不需要口才、表達能力</li>
+                                            <li>• AI 回答比你講得更專業</li>
+                                            <li>• 疑慮處理更有說服力</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-10 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-4 border-purple-500/50 rounded-3xl text-center">
+                            <p class="text-4xl font-black mb-6">
+                                <span class="metallic-text">硬傷 + 軟傷全解 = 立即變現</span>
+                            </p>
+                            <div class="max-w-3xl mx-auto space-y-4 text-left mb-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">1</div>
+                                    <p class="text-lg text-gray-200"><strong class="text-green-400">環貫綠佳利</strong> 解決了制度硬傷（無囤貨、無責任額、無代數限制）</p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">2</div>
+                                    <p class="text-lg text-gray-200"><strong class="text-purple-400">魷魚的 AI</strong> 解決了能力軟傷（背知識、練口才、處理疑慮）</p>
+                                </div>
+                            </div>
+                            <p class="text-2xl text-green-400 font-bold mb-2">
+                                = 今天加入，今天就能用 AI 服務客戶，今天就能賺錢
+                            </p>
+                            <p class="text-xl text-gray-300">
+                                不用等學完再開始，<strong class="text-yellow-400">立即變現</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 關於我 -->
+    <section class="py-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="display-2 font-black mb-6">
+                    我是<span class="metallic-text">游育杰</span>
+                </h2>
+                <p class="body-lg text-gray-400">
+                    我不是天生業務，但我會「設計系統」
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- 左側：照片 -->
+                <div class="relative">
+                    <div class="aspect-square rounded-3xl overflow-hidden shadow-2xl border-4 border-yellow-500/30">
+                        <img src="https://pub-ca5c7006c31d41398cd049593f8fa344.r2.dev/NP/%E5%80%8B%E4%BA%BA%E5%B0%81%E9%9D%A2%E7%85%A7.png" alt="游育杰" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-yellow-500 to-orange-500 text-white p-6 shadow-xl rounded-2xl max-w-xs">
+                        <p class="font-bold text-lg">游育杰 (魷魚)</p>
+                        <p class="text-sm text-yellow-100">系統設計師 × AI 賦能專家</p>
+                    </div>
+                </div>
+                
+                <!-- 右側：介紹 -->
+                <div>
+                    <div class="glass-card p-8 rounded-2xl mb-6">
+                        <h4 class="text-xl font-bold mb-4">過去：派車系統專家</h4>
+                        <p class="text-gray-300 leading-relaxed">
+                            曾任長照無障礙接送負責人，管理 <strong class="text-yellow-400">100+ 司機</strong>調度。<br>
+                            我的專長是<strong class="text-cyan-400">「把複雜的事變簡單」</strong>。
+                        </p>
+                    </div>
+                    
+                    <div class="glass-card p-8 rounded-2xl mb-6">
+                        <h4 class="text-xl font-bold mb-4">現在：AI 系統設計師</h4>
+                        <p class="text-gray-300 leading-relaxed">
+                            我把環貫綠佳利的專業知識，訓練成 AI 大腦。<br>
+                            讓新手也能擁有<strong class="text-green-400">專家等級的回答能力</strong>。
+                        </p>
+                    </div>
+                    
+                    <div class="gradient-border p-6 rounded-2xl">
+                        <p class="text-lg italic text-gray-300">
+                            "好的系統，是讓每個人都能帶著<strong class="text-yellow-400">尊嚴</strong>、<strong class="text-cyan-400">優雅</strong>地發揮價值。"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA：探索可能 -->
+    <section class="py-24 px-6 bg-gradient-to-b from-transparent to-slate-900">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="display-2 font-black mb-6">
+                如果你也在思考<span class="metallic-text">未來的出路</span>
+            </h2>
+            
+            <p class="body-lg text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                不用馬上決定什麼，<br>
+                先<strong class="text-white">了解這個模式</strong>，<br>
+                看看是否適合你。
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="https://portaly.cc/mastersquid" target="_blank" class="luxury-btn text-gray-900 font-bold px-12 py-6 rounded-full text-xl shadow-2xl inline-flex items-center justify-center gap-3">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    聯繫游育杰
+                </a>
+                <a href="./explore-life.html" class="glass-card text-white font-bold px-12 py-6 rounded-full text-xl border-2 border-white/20 hover:border-white/40 transition-all inline-flex items-center justify-center glow-hover">
+                    探索更多工具
+                </a>
+            </div>
+            
+            <p class="text-sm text-gray-500">
+                點擊後將前往個人 LINE 或探索數位工具
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/10">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-6 text-sm">
+                <a href="https://portaly.cc/mastersquid" target="_blank" class="text-yellow-400 hover:text-yellow-300 transition-colors font-medium">
+                    游育杰個人連結
+                </a>
+                <span class="hidden md:block text-gray-600">|</span>
+                <a href="https://github.com/randophlab/Website" target="_blank" class="text-gray-400 hover:text-gray-300 transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm mb-2">
+                © 2024 游育杰 | 變現你的人生閱歷
+            </p>
+            <p class="text-gray-600 text-xs">
+                讓科技為您的未來服務
+            </p>
+        </div>
+    </footer>
+
+    <!-- Chart.js 初始化 -->
+    <script>
+        // 等待頁面載入完成
+        window.addEventListener('DOMContentLoaded', function() {
+            
+            // 圖表 1：上班族收入被砍（多層柱狀圖）
+            const ctx1 = document.getElementById('chart-salary');
+            if (ctx1) {
+                new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: ['文書行政', '客服', '會計', '設計師', '業務'],
+                        datasets: [
+                            {
+                                label: 'AI 前月薪',
+                                data: [40000, 35000, 50000, 55000, 45000],
+                                backgroundColor: 'rgba(34, 197, 94, 0.8)',
+                                borderColor: 'rgba(34, 197, 94, 1)',
+                                borderWidth: 2
+                            },
+                            {
+                                label: 'AI 後月薪',
+                                data: [20000, 15000, 25000, 30000, 25000],
+                                backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                                borderColor: 'rgba(239, 68, 68, 1)',
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { 
+                                    color: '#cbd5e1',
+                                    callback: function(value) {
+                                        return (value/10000) + '萬';
+                                    }
+                                },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#cbd5e1', font: { size: 11 } },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#cbd5e1',
+                                    font: { size: 12 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + (context.parsed.y/10000) + ' 萬';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 圖表 2：創業總成本（大數字柱狀圖 + 數字跳轉）
+            const ctx2 = document.getElementById('chart-startup-total');
+            if (ctx2) {
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: ['自己創業', '加盟連鎖'],
+                        datasets: [
+                            {
+                                label: '啟動資金',
+                                data: [120, 65],
+                                backgroundColor: 'rgba(251, 146, 60, 0.8)',
+                                borderColor: 'rgba(251, 146, 60, 1)',
+                                borderWidth: 2
+                            },
+                            {
+                                label: '6 個月週轉金',
+                                data: [100, 50],
+                                backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                                borderColor: 'rgba(239, 68, 68, 1)',
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                stacked: true,
+                                beginAtZero: true,
+                                ticks: { 
+                                    color: '#cbd5e1',
+                                    callback: function(value) {
+                                        return value + ' 萬';
+                                    }
+                                },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            x: {
+                                stacked: true,
+                                ticks: { color: '#cbd5e1', font: { size: 13 } },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#cbd5e1',
+                                    font: { size: 12 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y + ' 萬';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // 數字跳轉動畫
+                const counters = document.querySelectorAll('.counter');
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const increment = target / 50;
+                    
+                    const updateCount = () => {
+                        const count = +counter.innerText;
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + increment);
+                            setTimeout(updateCount, 30);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    
+                    // 延遲啟動
+                    setTimeout(updateCount, 500);
+                });
+            }
+            
+            // 圖表 3A：健康產業成長（折線圖）
+            const ctx3a = document.getElementById('chart-health-market');
+            if (ctx3a) {
+                new Chart(ctx3a, {
+                    type: 'line',
+                    data: {
+                        labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2030 預測'],
+                        datasets: [
+                            {
+                                label: '全球健康產業（兆美元）',
+                                data: [4.5, 5.1, 5.8, 6.5, 7.2, 8.0, 12.5],
+                                borderColor: 'rgba(34, 197, 94, 1)',
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                borderWidth: 3
+                            },
+                            {
+                                label: '保健品市場（兆美元）',
+                                data: [0.9, 1.1, 1.3, 1.5, 1.8, 2.1, 3.5],
+                                borderColor: 'rgba(34, 211, 238, 1)',
+                                backgroundColor: 'rgba(34, 211, 238, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                borderWidth: 3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { 
+                                    color: '#cbd5e1',
+                                    callback: function(value) {
+                                        return value + ' 兆';
+                                    }
+                                },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#cbd5e1' },
+                                grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#cbd5e1',
+                                    font: { size: 11 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 圖表 3B：薪資成長停滯（折線圖）
+            const ctx3b = document.getElementById('chart-salary-growth');
+            if (ctx3b) {
+                new Chart(ctx3b, {
+                    type: 'line',
+                    data: {
+                        labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2030 預測'],
+                        datasets: [
+                            {
+                                label: 'AI 前薪資成長率 %',
+                                data: [3.2, 3.5, 3.8, 4.0, 3.5, 3.0, 2.0],
+                                borderColor: 'rgba(251, 191, 36, 1)',
+                                backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                borderWidth: 3
+                            },
+                            {
+                                label: 'AI 後薪資成長率 %',
+                                data: [3.2, 3.5, 3.0, 2.5, 1.8, 1.2, 0.5],
+                                borderColor: 'rgba(239, 68, 68, 1)',
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                borderWidth: 3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { 
+                                    color: '#cbd5e1',
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#cbd5e1' },
+                                grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#cbd5e1',
+                                    font: { size: 11 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- 翻牌點擊控制 -->
+    <script>
+        document.querySelectorAll('.flip-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('flipped');
+            });
+        });
+        
+        // 滾動觸發動畫
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+        
+        // 為所有需要動畫的元素加上觀察
+        document.querySelectorAll('.fade-in-scroll, .scale-in, .slide-in-left, .slide-in-right').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
